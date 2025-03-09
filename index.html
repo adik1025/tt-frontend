@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Match Management</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    .section-container {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .section-container h2 {
+      margin-bottom: 15px;
+    }
+    .btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    /* Make input fields black with white text */
+    .form-control {
+      background-color: #000000;
+      color: #ffffff;
+      border: 1px solid #666;
+    }
+    .form-control:focus {
+      background-color: #000000;
+      color: #ffffff;
+      border-color: #0d6efd;
+      box-shadow: none;
+    }
+    label {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="mb-4">Manage Your Matches</h1>
+
+    <!-- Add a New Match -->
+    <div class="section-container">
+      <h2>Add a New Match</h2>
+      <form id="addMatchForm">
+        <div class="mb-3">
+          <label for="addPlayer1" class="form-label">First Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="addPlayer1"
+            placeholder="Enter first player's name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="addPlayer2" class="form-label">Second Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="addPlayer2"
+            placeholder="Enter second player's name"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Add Match
+        </button>
+      </form>
+    </div>
+
+    <!-- Update an Existing Match -->
+    <div class="section-container">
+      <h2>Update an Existing Match</h2>
+      <form id="updateMatchForm">
+        <div class="mb-3">
+          <label for="updatePlayer1" class="form-label">First Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="updatePlayer1"
+            placeholder="Enter first player's name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="updatePlayer2" class="form-label">Second Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="updatePlayer2"
+            placeholder="Enter second player's name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="player1Points" class="form-label">First Player Points</label>
+          <input
+            type="number"
+            class="form-control"
+            id="player1Points"
+            placeholder="Enter points for first player"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="player2Points" class="form-label">Second Player Points</label>
+          <input
+            type="number"
+            class="form-control"
+            id="player2Points"
+            placeholder="Enter points for second player"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="player1Games" class="form-label">First Player Games</label>
+          <input
+            type="number"
+            class="form-control"
+            id="player1Games"
+            placeholder="Enter number of games for first player"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="player2Games" class="form-label">Second Player Games</label>
+          <input
+            type="number"
+            class="form-control"
+            id="player2Games"
+            placeholder="Enter number of games for second player"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Update Match
+        </button>
+      </form>
+    </div>
+
+    <!-- Search for a Match -->
+    <div class="section-container">
+      <h2>Search for a Match</h2>
+      <form id="searchMatchForm">
+        <div class="mb-3">
+          <label for="searchPlayer1" class="form-label">First Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="searchPlayer1"
+            placeholder="Enter first player's name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="searchPlayer2" class="form-label">Second Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="searchPlayer2"
+            placeholder="Enter second player's name"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Search
+        </button>
+      </form>
+    </div>
+
+    <!-- Remove a Match -->
+    <div class="section-container">
+      <h2>Remove a Match</h2>
+      <form id="removeMatchForm">
+        <div class="mb-3">
+          <label for="removePlayer1" class="form-label">First Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="removePlayer1"
+            placeholder="Enter first player's name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="removePlayer2" class="form-label">Second Player Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="removePlayer2"
+            placeholder="Enter second player's name"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          Remove Match
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript to handle requests -->
+  <script>
+    // Base URL for your Flask server
+    const apiUrl = 'http://127.0.0.1:2222/api/match';
+
+    // Add a New Match (POST)
+    document.getElementById('addMatchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        player1: document.getElementById('addPlayer1').value,
+        player2: document.getElementById('addPlayer2').value
+      };
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert('Your match has been added:\n' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong while adding the match.');
+      }
+    });
+
+    // Update an Existing Match (PUT)
+    document.getElementById('updateMatchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        player1: document.getElementById('updatePlayer1').value,
+        player2: document.getElementById('updatePlayer2').value,
+        player1_points: parseInt(document.getElementById('player1Points').value),
+        player2_points: parseInt(document.getElementById('player2Points').value),
+        player1_games: parseInt(document.getElementById('player1Games').value),
+        player2_games: parseInt(document.getElementById('player2Games').value)
+      };
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert('Your match has been updated:\n' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong while updating the match.');
+      }
+    });
+
+    // Search for a Match (GET)
+    document.getElementById('searchMatchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        player1: document.getElementById('searchPlayer1').value,
+        player2: document.getElementById('searchPlayer2').value
+      };
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert('Match details:\n' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong while searching for the match.');
+      }
+    });
+
+    // Remove a Match (DELETE)
+    document.getElementById('removeMatchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        player1: document.getElementById('removePlayer1').value,
+        player2: document.getElementById('removePlayer2').value
+      };
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        alert('Your match has been removed:\n' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Something went wrong while removing the match.');
+      }
+    });
+  </script>
+
+  <!-- Bootstrap Bundle with Popper (Optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
